@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import userModel from "../models/user.model";
 
-export const handleCreateUser: RequestHandler = async (req, res, next) => {
+const handleCreateUser: RequestHandler = async (req, res, next) => {
   try {
     const { name, email, age } = req.body;
     const user = await userModel.create({
@@ -18,7 +18,7 @@ export const handleCreateUser: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-export const handleGetAllUsers: RequestHandler = async (req, res, next) => {
+const handleGetAllUsers: RequestHandler = async (req, res, next) => {
   try {
     const users = await userModel.findAll();
     res.status(200).json({
@@ -30,7 +30,7 @@ export const handleGetAllUsers: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-export const handleGetUserById: RequestHandler = async (req, res, next) => {
+const handleGetUserById: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id;
     const user = await userModel.findByPk(id);
@@ -51,7 +51,7 @@ export const handleGetUserById: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-export const handleUpdateUserById: RequestHandler = async (req, res, next) => {
+const handleUpdateUserById: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id;
     const user = await userModel.findByPk(id);
@@ -73,7 +73,7 @@ export const handleUpdateUserById: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-export const handleDeleteUserById: RequestHandler = async (req, res, next) => {
+const handleDeleteUserById: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id;
     const user = await userModel.findByPk(id);
@@ -93,4 +93,12 @@ export const handleDeleteUserById: RequestHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export default {
+  handleCreateUser,
+  handleGetAllUsers,
+  handleGetUserById,
+  handleUpdateUserById,
+  handleDeleteUserById,
 };
