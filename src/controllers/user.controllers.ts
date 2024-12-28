@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import userModel from "../models/user.model";
+import { Op } from "sequelize";
 
 const handleCreateUser: RequestHandler = async (req, res, next) => {
   try {
@@ -20,7 +21,11 @@ const handleCreateUser: RequestHandler = async (req, res, next) => {
 };
 const handleGetAllUsers: RequestHandler = async (req, res, next) => {
   try {
-    const users = await userModel.findAll();
+    const name = req.query.name;
+    const whereClause = name
+      ? { where: { name: { [Op.like]: `%${name}%` } } }
+      : {};
+    const users = await userModel.findAll(whereClause);
     res.status(200).json({
       success: true,
       message: "Users fetched successfully.",
