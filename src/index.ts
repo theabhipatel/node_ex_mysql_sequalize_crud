@@ -1,11 +1,17 @@
 import express from "express";
+import { HOSTNAME, NODE_ENV, PORT } from "./config";
 
 const app = express();
 
 app.get("/", (req, res) => {
-  res.status(200).json({ success: true, message: "Welcome to home route." });
+  res.status(200).json({
+    success: true,
+    message: `Welcome to home route in the ${NODE_ENV}.`,
+  });
 });
 
-app.listen(3001, () => {
-  console.log(`Server is running in Development mode at http://localhost:3001`);
+app.listen(Number(PORT), HOSTNAME, () => {
+  console.log(
+    `Server is running in ${NODE_ENV} mode at http://${HOSTNAME}:${PORT}`
+  );
 });
