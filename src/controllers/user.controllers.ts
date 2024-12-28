@@ -32,6 +32,21 @@ export const handleGetAllUsers: RequestHandler = async (req, res, next) => {
 };
 export const handleGetUserById: RequestHandler = async (req, res, next) => {
   try {
+    const id = req.params.id;
+    const user = await userModel.findByPk(id);
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User not found.",
+        user,
+      });
+      return;
+    }
+    res.status(200).json({
+      success: true,
+      message: "User fetched successfully.",
+      user,
+    });
   } catch (error) {
     next(error);
   }
