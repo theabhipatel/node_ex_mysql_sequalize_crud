@@ -11,8 +11,12 @@ export const connectDb = async () => {
   try {
     await sequelize.authenticate();
     console.log("[::] Database connected ...");
-    await sequelize.sync();
-    console.log("[::] Database synchronized ...");
+    try {
+      await sequelize.sync({ alter: true });
+      console.log("[::] Database synchronized ...");
+    } catch (error) {
+      console.log("[!!] Database not synchronized !", error);
+    }
   } catch (error) {
     console.log("[!] Database not connected !!!");
   }

@@ -24,7 +24,7 @@ const userModel: ModelDefined<
       unique: true,
     },
     age: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   },
