@@ -1,5 +1,6 @@
 import express from "express";
 import { HOSTNAME, NODE_ENV, PORT } from "./config";
+import { connectDb } from "./utils/connectDb";
 
 const app = express();
 
@@ -14,4 +15,5 @@ app.listen(Number(PORT), HOSTNAME, () => {
   console.log(
     `Server is running in ${NODE_ENV} mode at http://${HOSTNAME}:${PORT}`
   );
+  connectDb();
 });
