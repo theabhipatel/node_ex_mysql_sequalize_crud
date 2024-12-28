@@ -21,15 +21,38 @@ const handleCreateUser: RequestHandler = async (req, res, next) => {
 };
 const handleGetAllUsers: RequestHandler = async (req, res, next) => {
   try {
-    const name = req.query.name;
-    const whereClause = name
-      ? { where: { name: { [Op.like]: `%${name}%` } } }
-      : {};
-    const users = await userModel.findAll(whereClause);
+    const { name, age } = req.query;
+
+    const ageNumber = age ? Number(age) : undefined;
+
+    /** ---> Pagination. */
+    const limit = Number(req.query.limit) || 5;
+    const page = Number(req.query.page) || 1;
+    const offset = page * limit - limit;
+
+    const whereClause: any = {};
+    if (name) {
+      whereClause.name = { [Op.like]: `%${name}%` };
+    }
+    if (ageNumber) {
+      whereClause.age = ageNumber;
+    }
+
+    const users = await userModel.findAndCountAll({
+      where: whereClause,
+      limit,
+      offset,
+    });
     res.status(200).json({
       success: true,
       message: "Users fetched successfully.",
-      users,
+      users: users.rows,
+      meta: {
+        page,
+        limit,
+        total: users.count,
+        totalPage: Math.ceil(users.count / limit),
+      },
     });
   } catch (error) {
     next(error);
